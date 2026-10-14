@@ -163,24 +163,24 @@ class EditAlarmActivity : AppCompatActivity() {
             chips.addView(c)
         }
         body.add(chips, topDp = 6)
-        val presets = row()
+        val presets = ChipGroup(this).apply { isSingleLine = false }
         listOf(
             "Once" to emptySet(),
             "Weekdays" to setOf(1, 2, 3, 4, 5),
             "Weekends" to setOf(6, 7),
             "Every day" to (1..7).toSet(),
         ).forEach { (name, set) ->
-            presets.add(
+            presets.addView(
                 MaterialButton(this, null, androidx.appcompat.R.attr.borderlessButtonStyle).apply {
                     text = name
                     isAllCaps = false
                     setTextColor(C.PRIMARY)
+                    tag = "preset_$name"
                     setOnClickListener { setDays(set) }
-                },
-                WRAP, WRAP,
+                }.compact(),
             )
         }
-        body.add(presets)
+        body.add(presets, topDp = 2)
     }
 
     private fun setDays(set: Set<Int>) {
@@ -228,7 +228,7 @@ class EditAlarmActivity : AppCompatActivity() {
                     isAllCaps = false
                     setTextColor(C.PRIMARY)
                     setOnClickListener { configureMission(m, i) }
-                },
+                }.compact(),
                 WRAP, WRAP,
             )
             r.add(
@@ -240,7 +240,7 @@ class EditAlarmActivity : AppCompatActivity() {
                         draft = draft.copy(missions = draft.missions.filterIndexed { j, _ -> j != i })
                         renderMissions()
                     }
-                },
+                }.compact(),
                 WRAP, WRAP,
             )
             c.add(r)

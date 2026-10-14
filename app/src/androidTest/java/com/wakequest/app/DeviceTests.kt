@@ -391,8 +391,14 @@ class ScreensTest {
             T.shot("25_edit_alarm")
             onView(T.tag("add_mission")).perform(scrollTo())
             T.shot("26_edit_alarm_missions")
+            T.click("add_mission")
+            Thread.sleep(800)
+            T.shot("27_choose_mission_dialog")
+            pressBack()
+            T.click("preset_Every day")
             T.click("save_alarm")
             T.waitForView("new_alarm")
+            assertEquals(7, store.alarms().first { a -> a.label == "Work" }.days.size)
         }
     }
 

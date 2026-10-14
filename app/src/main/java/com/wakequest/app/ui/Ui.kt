@@ -100,6 +100,17 @@ fun Context.button(text: CharSequence, style: BtnStyle = BtnStyle.PRIMARY, onCli
     return b
 }
 
+/** Removes Material's generous default width/padding so small buttons fit narrow screens. */
+fun <T : MaterialButton> T.compact(): T {
+    minWidth = 0
+    minimumWidth = 0
+    insetTop = 0
+    insetBottom = 0
+    val p = context.dp(6)
+    setPaddingRelative(p, paddingTop, p, paddingBottom)
+    return this
+}
+
 fun Context.rounded(color: Int, radiusDp: Float = 20f): GradientDrawable =
     GradientDrawable().apply { setColor(color); cornerRadius = dpf(radiusDp) }
 

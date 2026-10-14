@@ -197,6 +197,9 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
             return
         }
         waitingForService = false
+        if (lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.RESUMED)) {
+            AlarmService.send(this, AlarmService.ACTION_UI_SHOWN) // ignored if already shown
+        }
         if (alarm.id != ringingAlarmId) {
             // a different ring than the one on screen: start over
             ringingAlarmId = alarm.id

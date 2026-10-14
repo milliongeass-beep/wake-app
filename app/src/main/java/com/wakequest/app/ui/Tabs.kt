@@ -335,6 +335,8 @@ class SoundsTab(act: MainActivity) : Tab(act) {
                 id = View.generateViewId()
                 text = if (m == 0) "∞" else "${m}m"
                 isAllCaps = false
+                textSize = 14f
+                compact()
             }
             timerIds[b.id] = m
             timerGroup.addView(b, LinearLayout.LayoutParams(0, WRAP, 1f))
