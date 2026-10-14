@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.wakequest.app.AlarmFlowTest" tests="11" failures="0" errors="0" skipped="0" time="152.429" timestamp="2026-10-14T04:43:37" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 14" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="dismissSchedulesWakeCheckAndAnsweringItPasses" classname="com.wakequest.app.AlarmFlowTest" time="25.992" />
+  <testcase name="alarmFiresFromAlarmManagerAndMathMissionTurnsItOff" classname="com.wakequest.app.AlarmFlowTest" time="12.734" />
+  <testcase name="backButtonCannotEscapeTheAlarm" classname="com.wakequest.app.AlarmFlowTest" time="6.509" />
+  <testcase name="typingMissionCanBeCompleted" classname="com.wakequest.app.AlarmFlowTest" time="7.131" />
+  <testcase name="ignoredWakeCheckRingsAgainAndNeedsAMission" classname="com.wakequest.app.AlarmFlowTest" time="12.573" />
+  <testcase name="memoryMissionCanBeCompleted" classname="com.wakequest.app.AlarmFlowTest" time="9.164" />
+  <testcase name="alarmSurvivesActivityBeingClosedAndReopened" classname="com.wakequest.app.AlarmFlowTest" time="8.671" />
+  <testcase name="snoozeStopsAndSchedulesAnotherRing" classname="com.wakequest.app.AlarmFlowTest" time="5.761" />
+  <testcase name="otherMissionsRenderAndOfferBackupWhenNeeded" classname="com.wakequest.app.AlarmFlowTest" time="32.324" />
+  <testcase name="everyTabOpensAndCoreActionsWork" classname="com.wakequest.app.ScreensTest" time="21.603" />
+  <testcase name="newAlarmIsSavedAndScheduled" classname="com.wakequest.app.ScreensTest" time="7.106" />
+</testsuite>

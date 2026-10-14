@@ -1,0 +1,340 @@
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:38: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        p.edit().remove("snooze_$id").commit()
+                                      ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:44: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        p.edit().putInt("next_id", if (n >= 200_000_000) 1 else n + 1).commit()
+                                                                       ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:49: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+    fun setSnoozeCount(id: Int, n: Int) { p.edit().putInt("snooze_$id", n).commit() }
+                                                                           ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:67: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+    fun clearHistory() { p.edit().remove("history").commit() }
+                                                    ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:77: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        e.putString("routine_$dateKey", done.joinToString(",")).commit()
+                                                                ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:83: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putBoolean("force_volume", v).commit() }
+                                                        ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:87: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putBoolean("show_morning", v).commit() }
+                                                        ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:91: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putInt("mission_mute", v).commit() }
+                                                    ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:95: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putInt("sleep_goal", v).commit() }
+                                                  ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:99: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putBoolean("bedtime_reminder", v).commit() }
+                                                            ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:103: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putInt("bedtime_lead", v).commit() }
+                                                    ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:107: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putString("weather_city", v).remove("geo_key").commit() }
+                                                                         ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:111: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putBoolean("fahrenheit", v).commit() }
+                                                      ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:115: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putString("sleep_sound", v).commit() }
+                                                      ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:119: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putInt("sleep_timer", v).commit() }
+                                                   ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:123: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putInt("sleep_volume", v).commit() }
+                                                    ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:127: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        set(v) { p.edit().putBoolean("asked_notifications", v).commit() }
+                                                               ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:134: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        p.edit().putString("geo_key", city).putString("geo_value", value).commit()
+                                                                          ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:139: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+    fun clearAll() { p.edit().clear().commit() }
+                                      ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/data/Store.kt:152: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        p.edit().putString(key, a.toString()).commit()
+                                              ~~~~~~~~
+
+   Explanation for issues of type "ApplySharedPref":
+   Consider using apply() instead of commit on shared preferences. Whereas
+   commit blocks and writes its data to persistent storage immediately, apply
+   will handle it in the background.
+
+/home/runner/work/wake-app/wake-app/app/build.gradle.kts:15: Warning: Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details. [OldTargetApi]
+        targetSdk = 35
+        ~~~~~~~~~~~~~~
+
+   Explanation for issues of type "OldTargetApi":
+   When your application runs on a version of Android that is more recent than
+   your targetSdkVersion specifies that it has been tested with, various
+   compatibility modes kick in. This ensures that your application continues
+   to work, but it may look out of place. For example, if the targetSdkVersion
+   is less than 14, your app may get an option button in the UI.
+
+   To fix this issue, set the targetSdkVersion to the highest available value.
+   Then test your app to make sure everything works correctly. You may want to
+   consult the compatibility notes to see what changes apply to each version
+   you are adding support for:
+   https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+   as well as follow this guide:
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.
+   html
+
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.html
+
+/home/runner/work/wake-app/wake-app/app/src/main/AndroidManifest.xml:60: Warning: Attribute showWhenLocked is only used in API level 27 and higher (current min is 26) [UnusedAttribute]
+            android:showWhenLocked="true"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/AndroidManifest.xml:62: Warning: Attribute turnScreenOn is only used in API level 27 and higher (current min is 26) [UnusedAttribute]
+            android:turnScreenOn="true"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/AndroidManifest.xml:69: Warning: Attribute showWhenLocked is only used in API level 27 and higher (current min is 26) [UnusedAttribute]
+            android:showWhenLocked="true"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedAttribute":
+   This check finds attributes set in XML files that were introduced in a
+   version newer than the oldest version targeted by your application (with
+   the minSdkVersion attribute).
+
+   This is not an error; the application will simply ignore the attribute.
+   However, if the attribute is important to the appearance or functionality
+   of your application, you should consider finding an alternative way to
+   achieve the same result with only available attributes, and then you can
+   optionally create a copy of the layout in a layout-vNN folder which will be
+   used on API NN or higher where you can take advantage of the newer
+   attribute.
+
+   Note: This check does not only apply to attributes. For example, some tags
+   can be unused too, such as the new <tag> element in layouts introduced in
+   API 21.
+
+/home/runner/work/wake-app/wake-app/app/build.gradle.kts:59: Warning: A newer version of androidx.core:core-ktx than 1.13.1 is available: 1.19.1 [GradleDependency]
+    implementation("androidx.core:core-ktx:1.13.1")
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/build.gradle.kts:60: Warning: A newer version of androidx.appcompat:appcompat than 1.7.0 is available: 1.8.0 [GradleDependency]
+    implementation("androidx.appcompat:appcompat:1.7.0")
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/build.gradle.kts:61: Warning: A newer version of androidx.activity:activity-ktx than 1.9.3 is available: 1.13.0 [GradleDependency]
+    implementation("androidx.activity:activity-ktx:1.9.3")
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/build.gradle.kts:62: Warning: A newer version of com.google.android.material:material than 1.12.0 is available: 1.14.0 [GradleDependency]
+    implementation("com.google.android.material:material:1.12.0")
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/build.gradle.kts:63: Warning: A newer version of androidx.exifinterface:exifinterface than 1.3.7 is available: 1.4.2 [GradleDependency]
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/build.gradle.kts:69: Warning: A newer version of androidx.test.ext:junit than 1.2.1 is available: 1.3.0 [GradleDependency]
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/build.gradle.kts:70: Warning: A newer version of androidx.test:runner than 1.6.2 is available: 1.7.0 [GradleDependency]
+    androidTestImplementation("androidx.test:runner:1.6.2")
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/build.gradle.kts:71: Warning: A newer version of androidx.test:rules than 1.6.1 is available: 1.7.0 [GradleDependency]
+    androidTestImplementation("androidx.test:rules:1.6.1")
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/build.gradle.kts:72: Warning: A newer version of androidx.test.espresso:espresso-core than 3.6.1 is available: 3.7.0 [GradleDependency]
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "GradleDependency":
+   This detector looks for usages of libraries where the version you are using
+   is not the current stable release. Using older versions is fine, and there
+   are cases where you deliberately want to stick with an older version.
+   However, you may simply not be aware that a more recent version is
+   available, and that is what this lint check helps find.
+
+/home/runner/work/wake-app/wake-app/app/src/main/AndroidManifest.xml:75: Warning: Should not restrict activity to fixed orientation. This may not be suitable for different form factors, causing the app to be letterboxed. [DiscouragedApi]
+            android:screenOrientation="fullSensor"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "DiscouragedApi":
+   Discouraged APIs are allowed and are not deprecated, but they may be unfit
+   for common use (e.g. due to slow performance or subtle behavior).
+
+/home/runner/work/wake-app/wake-app/app/src/main/res/mipmap-anydpi-v26: Warning: This folder configuration (v26) is unnecessary; minSdkVersion is 26. Merge all the resources in this folder into mipmap-anydpi. [ObsoleteSdkInt]
+
+   Explanation for issues of type "ObsoleteSdkInt":
+   This check flags version checks that are not necessary, because the
+   minSdkVersion (or surrounding known API level) is already at least as high
+   as the version checked for.
+
+   Similarly, it also looks for resources in -vNN folders, such as values-v14
+   where the version qualifier is less than or equal to the minSdkVersion,
+   where the contents should be merged into the best folder.
+
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/AlarmActivity.kt:98: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                v.text = "${left.coerceAtLeast(0)} s"
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:78: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        question.text = "${problem.text} = ?"
+                        ~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:79: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        progress.text = "Problem ${solved + 1} of ${mission.amount}"
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:79: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        progress.text = "Problem ${solved + 1} of ${mission.amount}"
+                                   ~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:79: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        progress.text = "Problem ${solved + 1} of ${mission.amount}"
+                         ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:79: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        progress.text = "Problem ${solved + 1} of ${mission.amount}"
+                                              ~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:90: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            feedback.text = "Not quite — try again"
+                             ~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:144: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        progress.text = "Phrase ${done + 1} of ${mission.amount}"
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:144: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        progress.text = "Phrase ${done + 1} of ${mission.amount}"
+                                  ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:144: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        progress.text = "Phrase ${done + 1} of ${mission.amount}"
+                         ~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:144: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        progress.text = "Phrase ${done + 1} of ${mission.amount}"
+                                           ~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:209: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        progress.text = "Round ${rounds + 1} of ${mission.amount}"
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:209: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        progress.text = "Round ${rounds + 1} of ${mission.amount}"
+                                 ~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:209: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        progress.text = "Round ${rounds + 1} of ${mission.amount}"
+                         ~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:209: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        progress.text = "Round ${rounds + 1} of ${mission.amount}"
+                                            ~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:210: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        status.text = "Watch closely…"
+                       ~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:214: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            status.text = "Tap the ${p.size} tiles that lit up"
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:214: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            status.text = "Tap the ${p.size} tiles that lit up"
+                           ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:214: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            status.text = "Tap the ${p.size} tiles that lit up"
+                                            ~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:229: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                        status.text = "Perfect! ✅"
+                                       ~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:232: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                        status.text = "Nice! Next round…"
+                                       ~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/BrainMissions.kt:240: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            status.text = "Oops — watch again"
+                           ~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:227: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    text = "Edit"
+                            ~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:324: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                        status.text = "Checking…"
+                                       ~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:330: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                                    result == null -> status.text = "Couldn't read the photo, try again."
+                                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:331: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                                    result.second < PhotoUtil.MIN_CONTRAST -> status.text = "Too dark or plain — pick a spot with some detail and the light on."
+                                                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:334: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                                        status.text = "Photo registered ✓  Remember where you took it!"
+                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:356: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                        status.text = "Registered: ${code.trim()}"
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:356: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                        status.text = "Registered: ${code.trim()}"
+                                       ~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:417: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        soundBtn.text = "🎵  $name"
+                        ~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:461: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        ringsIn.text = "Rings in ${formatDuration(ms)}" + if (draft.days.isEmpty()) " (once)" else ""
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:461: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        ringsIn.text = "Rings in ${formatDuration(ms)}" + if (draft.days.isEmpty()) " (once)" else ""
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/EditAlarmActivity.kt:461: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        ringsIn.text = "Rings in ${formatDuration(ms)}" + if (draft.days.isEmpty()) " (once)" else ""
+                        ~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/MorningActivity.kt:93: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            target.text = "🌡️ Add your city in Settings to see today's weather here."
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/MorningActivity.kt:97: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        target.text = "Loading weather…"
+                       ~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/MorningActivity.kt:115: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                    target.text = "🌡️ Couldn't load the weather right now."
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:104: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        counter.text = "$count / ${mission.amount}"
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:157: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+        status.text = "Checking…"
+                       ~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:164: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                        status.text = "Couldn't read that photo — try again."
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:168: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                        status.text = "Too dark or blurry — turn the light on and try again."
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:176: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                            status.text = "It's a match! ✅"
+                                           ~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:180: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                            status.text = "Not a match (${(sim * 100).roundToInt()}%, need ${(need * 100).roundToInt()}%). Same spot, same angle."
+                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:180: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                            status.text = "Not a match (${(sim * 100).roundToInt()}%, need ${(need * 100).roundToInt()}%). Same spot, same angle."
+                                           ~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:180: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                            status.text = "Not a match (${(sim * 100).roundToInt()}%, need ${(need * 100).roundToInt()}%). Same spot, same angle."
+                                                                                   ~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:180: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                            status.text = "Not a match (${(sim * 100).roundToInt()}%, need ${(need * 100).roundToInt()}%). Same spot, same angle."
+                                                                                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:206: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                        status.text = "That's the one! ✅"
+                                       ~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/missions/PhysicalMissions.kt:210: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+                        status.text = "That's a different barcode."
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/Tabs.kt:70: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            text = "New alarm"
+                    ~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/Tabs.kt:313: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+                text = "${t.emoji}  ${t.title}"
+                       ~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/Tabs.kt:385: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            playBtn.text = "▶  Play"
+                            ~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/Tabs.kt:386: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            status.text = "Fades out gently when the timer ends."
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/runner/work/wake-app/wake-app/app/src/main/java/com/wakequest/app/ui/Tabs.kt:388: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            playBtn.text = "■  Stop"
+                            ~~~~~~~
+
+   Explanation for issues of type "SetTextI18n":
+   When calling TextView#setText
+   * Never call Number#toString() to format numbers; it will not handle
+   fraction separators and locale-specific digits properly. Consider using
+   String#format with proper format specifications (%d or %f) instead.
+   * Do not pass a string literal (e.g. "Hello") to display text. Hardcoded
+   text can not be properly translated to other languages. Consider using
+   Android resource strings instead.
+   * Do not build messages by concatenating text chunks. Such messages can not
+   be properly translated.
+
+   https://developer.android.com/guide/topics/resources/localization.html
+
+0 errors, 87 warnings

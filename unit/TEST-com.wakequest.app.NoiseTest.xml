@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.wakequest.app.NoiseTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-14T04:38:33" hostname="runnervmmprz5" time="0.109">
+  <properties/>
+  <testcase name="everySoundIsAudibleAndInRange" classname="com.wakequest.app.NoiseTest" time="0.108"/>
+  <testcase name="fillProduces16BitSamples" classname="com.wakequest.app.NoiseTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

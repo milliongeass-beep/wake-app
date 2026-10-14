@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.wakequest.app.MissionLogicTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-14T04:38:33" hostname="runnervmmprz5" time="0.1">
+  <properties/>
+  <testcase name="stdDev" classname="com.wakequest.app.MissionLogicTest" time="0.002"/>
+  <testcase name="everyPhraseIsTypeable" classname="com.wakequest.app.MissionLogicTest" time="0.036"/>
+  <testcase name="walkingIsCountedAndRestingIsNot" classname="com.wakequest.app.MissionLogicTest" time="0.005"/>
+  <testcase name="mathAnswersAreCorrect" classname="com.wakequest.app.MissionLogicTest" time="0.048"/>
+  <testcase name="shakeNeedsRealForceAndCooldown" classname="com.wakequest.app.MissionLogicTest" time="0.002"/>
+  <testcase name="typingIgnoresCaseSpacingAndPunctuation" classname="com.wakequest.app.MissionLogicTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
