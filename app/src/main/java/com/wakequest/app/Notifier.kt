@@ -26,12 +26,14 @@ class App : Application() {
 object Notifier {
     const val CH_RING = "ring_v1"
     const val CH_RING_FALLBACK = "ring_fallback_v1"
+    const val CH_RING_QUIET = "ring_quiet_v1"
     const val CH_REMIND = "remind_v1"
     const val CH_SOUND = "sleep_sound_v1"
     const val ID_RING = 1001
     const val ID_BEDTIME = 1002
     const val ID_SOUND = 1003
     const val ID_FALLBACK = 1004
+    const val ID_RING_QUIET = 1005
 
     fun createChannels(ctx: Context) {
         val nm = ctx.getSystemService(NotificationManager::class.java)
@@ -50,9 +52,14 @@ object Notifier {
             enableVibration(true)
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         }
+        val quiet = NotificationChannel(CH_RING_QUIET, "Alarm in progress", NotificationManager.IMPORTANCE_LOW).apply {
+            description = "Shown while the alarm screen is already open"
+            setSound(null, null)
+            enableVibration(false)
+        }
         val remind = NotificationChannel(CH_REMIND, "Bedtime reminders", NotificationManager.IMPORTANCE_DEFAULT)
         val sound = NotificationChannel(CH_SOUND, "Sleep sounds", NotificationManager.IMPORTANCE_LOW)
-        nm.createNotificationChannels(listOf(ring, fallback, remind, sound))
+        nm.createNotificationChannels(listOf(ring, fallback, quiet, remind, sound))
     }
 
     private fun post(ctx: Context, id: Int, n: Notification) {

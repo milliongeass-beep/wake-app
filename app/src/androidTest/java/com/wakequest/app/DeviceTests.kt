@@ -14,7 +14,10 @@ import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.Visibility
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import androidx.test.espresso.NoActivityResumedException
+import androidx.test.espresso.PerformException
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withTagValue
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -73,13 +76,13 @@ object T {
         throw AssertionError("Timed out waiting for: $what")
     }
 
-    /** Waits until a view with this tag is on screen (activities may still be starting). */
+    /** Waits until a view with this tag exists and is visible (it may be scrolled off a small screen). */
     fun waitForView(tag: String, timeoutMs: Long = 15_000) {
         val end = System.currentTimeMillis() + timeoutMs
         var last: Throwable? = null
         while (System.currentTimeMillis() < end) {
             try {
-                onView(tag(tag)).check(matches(isDisplayed()))
+                onView(tag(tag)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
                 return
             } catch (t: Throwable) {
                 last = t
@@ -89,9 +92,14 @@ object T {
         throw AssertionError("View '$tag' never appeared", last)
     }
 
+    /** Scrolls the view into view when it lives in a ScrollView, then taps it. */
     fun click(tag: String) {
         waitForView(tag)
-        onView(tag(tag)).perform(click())
+        try {
+            onView(tag(tag)).perform(scrollTo(), click())
+        } catch (e: PerformException) {
+            onView(tag(tag)).perform(click())
+        }
     }
 
     /** Fires through AlarmManager exactly like a real alarm would. */
@@ -156,6 +164,12 @@ class AlarmFlowTest {
         T.ringSoon(a.id, Scheduler.KIND_SNOOZE)
         T.openRingScreen()
         T.waitForView("dismiss")
+        // With the alarm screen open, the loud heads-up banner must be swapped for a quiet one
+        val nm = T.ctx.getSystemService(android.app.NotificationManager::class.java)
+        T.waitFor("quiet notification while the alarm screen is open") {
+            val ids = nm.activeNotifications.map { it.id }
+            Notifier.ID_RING_QUIET in ids && Notifier.ID_RING !in ids
+        }
         T.shot("01_ringing")
         T.click("dismiss")
         T.waitForView("math_input")
@@ -251,7 +265,11 @@ class AlarmFlowTest {
         T.click("dismiss")
         T.waitForView("typing_input")
         T.shot("10_mission_typing")
-        onView(T.tag("typing_input")).perform(replaceText(TypingMission.currentPhrase.lowercase()), closeSoftKeyboard())
+        try {
+            // Completing the phrase turns the alarm off instantly, which can close the screen mid-action.
+            onView(T.tag("typing_input")).perform(replaceText(TypingMission.currentPhrase.lowercase()))
+        } catch (e: NoActivityResumedException) {
+        }
         T.waitFor("typing to finish") { !RingState.ringing }
     }
 
@@ -351,11 +369,11 @@ class ScreensTest {
             // Sounds: play and stop
             onView(withId(R.id.nav_sounds)).perform(click())
             T.waitForView("sound_play")
-            onView(T.tag("sound_play")).perform(scrollTo(), click())
+            T.click("sound_play")
             T.waitFor("sleep sound to start", 10_000) { SleepSoundService.playing != null }
             Thread.sleep(1500)
             T.shot("22_sounds_tab_playing")
-            onView(T.tag("sound_play")).perform(scrollTo(), click())
+            T.click("sound_play")
             T.waitFor("sleep sound to stop", 10_000) { SleepSoundService.playing == null }
 
             onView(withId(R.id.nav_stats)).perform(click())

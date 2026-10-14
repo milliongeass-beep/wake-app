@@ -50,6 +50,15 @@ class ModelJsonTest {
         assertTrue(Mission(MissionType.PHOTO, 1).describe().contains("Easy"))
     }
 
+    @Test fun durations() {
+        assertEquals("1 min", com.wakequest.app.ui.formatDuration(5_000))
+        assertEquals("45 min", com.wakequest.app.ui.formatDuration(45 * 60_000L))
+        assertEquals("2 h", com.wakequest.app.ui.formatDuration(120 * 60_000L))
+        assertEquals("7 h 30 min", com.wakequest.app.ui.formatDuration((7 * 60 + 30) * 60_000L))
+        assertEquals("3 days 4 h", com.wakequest.app.ui.formatDuration((76 * 60 + 44) * 60_000L))
+        assertEquals("1 day", com.wakequest.app.ui.formatDuration(24 * 60 * 60_000L))
+    }
+
     @Test fun noteAndHistoryRoundTrip() {
         val n = Note(5L, "Buy milk", true)
         assertEquals(n, Note.fromJson(JSONObject(n.toJson().toString())))

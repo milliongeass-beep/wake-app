@@ -140,6 +140,11 @@ fun Context.formatTime(t: ZonedDateTime): String = formatTime(t.hour, t.minute)
 
 fun formatDuration(ms: Long): String {
     val totalMin = max(1L, ceil(ms / 60000.0).toLong())
+    if (totalMin >= 24 * 60) {
+        val d = totalMin / (24 * 60)
+        val h = (totalMin % (24 * 60)) / 60
+        return if (h > 0) "$d day${if (d > 1) "s" else ""} $h h" else "$d day${if (d > 1) "s" else ""}"
+    }
     val h = totalMin / 60
     val m = totalMin % 60
     return when {

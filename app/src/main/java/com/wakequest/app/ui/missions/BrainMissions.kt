@@ -175,7 +175,8 @@ class MemoryMission(host: MissionHost, mission: Mission) : MissionView(host, mis
         status = col.add(ctx.label("", 20f, C.TEXT, bold = true, gravity = Gravity.CENTER), topDp = 8)
         val screenW = ctx.resources.displayMetrics.widthPixels
         val gap = ctx.dp(8)
-        val tileSize = ((minOf(screenW - ctx.dp(48), ctx.dp(380))) - gap * (size - 1)) / size
+        // screen padding: 20dp per side around the mission + 8dp inside it, plus a little slack
+        val tileSize = ((minOf(screenW - ctx.dp(64), ctx.dp(380))) - gap * (size - 1)) / size
         val grid = ctx.column()
         for (y in 0 until size) {
             val r = ctx.row()

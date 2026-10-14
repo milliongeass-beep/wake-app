@@ -1,6 +1,7 @@
 package com.wakequest.app.alarm
 
 import android.app.Notification
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
@@ -46,6 +47,8 @@ class AlarmService : Service() {
         const val ACTION_DISMISS = "com.wakequest.app.ring.DISMISS"
         const val ACTION_SNOOZE = "com.wakequest.app.ring.SNOOZE"
         const val ACTION_MISSION = "com.wakequest.app.ring.MISSION_ACTIVE"
+        const val ACTION_UI_SHOWN = "com.wakequest.app.ring.UI_SHOWN"
+        const val ACTION_UI_HIDDEN = "com.wakequest.app.ring.UI_HIDDEN"
         private const val TAG = "WQAlarmService"
 
         fun start(ctx: Context, id: Int, kind: Int) {
@@ -80,6 +83,7 @@ class AlarmService : Service() {
     private var level = 1f
     private var muted = false
     private var vibrating = false
+    private var uiVisible = false
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -89,6 +93,8 @@ class AlarmService : Service() {
             ACTION_MISSION -> missionActive()
             ACTION_SNOOZE -> snooze()
             ACTION_DISMISS -> dismiss()
+            ACTION_UI_SHOWN -> setUiVisible(true)
+            ACTION_UI_HIDDEN -> setUiVisible(false)
             else -> if (!RingState.ringing) stopEverything()
         }
         return START_NOT_STICKY
@@ -100,14 +106,20 @@ class AlarmService : Service() {
         val alarm = Store.get(this).alarm(id)
         val current = RingState.alarm
 
-        // startForegroundService() requires startForeground() promptly, whatever happens next.
-        goForeground(current ?: alarm)
         Notifier.cancelFallback(this)
-
         if (current != null) {
+            // startForegroundService() still requires a startForeground() call: keep the current notification
+            try {
+                if (uiVisible) ServiceCompat.startForeground(this, Notifier.ID_RING_QUIET, buildQuietNotification(), fgType)
+                else ServiceCompat.startForeground(this, Notifier.ID_RING, buildNotification(current), fgType)
+            } catch (e: Exception) {
+                Log.e(TAG, "startForeground failed", e)
+            }
             Log.w(TAG, "alarm $id fired while ${current.id} is ringing — keeping the current one")
             return
         }
+        // startForegroundService() requires startForeground() promptly, whatever happens next.
+        goForeground(alarm)
         if (alarm == null) {
             stopEverything()
             return
@@ -119,14 +131,54 @@ class AlarmService : Service() {
         launchUi()
     }
 
+    private val fgType: Int
+        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK else 0
+
     private fun goForeground(alarm: Alarm?) {
-        val type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-            ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK else 0
+        uiVisible = false
         try {
-            ServiceCompat.startForeground(this, Notifier.ID_RING, buildNotification(alarm), type)
+            ServiceCompat.startForeground(this, Notifier.ID_RING, buildNotification(alarm), fgType)
         } catch (e: Exception) {
             Log.e(TAG, "startForeground failed", e)
         }
+    }
+
+    /**
+     * While the alarm screen is open, swap the loud full-screen notification for a quiet one so the
+     * heads-up banner doesn't cover the mission. When the screen is left, bring the loud one back.
+     * (Switching the foreground notification id makes Android remove the previous one.)
+     */
+    private fun setUiVisible(visible: Boolean) {
+        if (!RingState.ringing || uiVisible == visible) return
+        uiVisible = visible
+        try {
+            if (visible) {
+                ServiceCompat.startForeground(this, Notifier.ID_RING_QUIET, buildQuietNotification(), fgType)
+                getSystemService(NotificationManager::class.java).cancel(Notifier.ID_RING)
+            } else {
+                ServiceCompat.startForeground(this, Notifier.ID_RING, buildNotification(RingState.alarm), fgType)
+                getSystemService(NotificationManager::class.java).cancel(Notifier.ID_RING_QUIET)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "could not swap notification", e)
+        }
+    }
+
+    private fun buildQuietNotification(): Notification {
+        val pi = PendingIntent.getActivity(
+            this, 4,
+            Intent(this, AlarmActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+        return NotificationCompat.Builder(this, Notifier.CH_RING_QUIET)
+            .setSmallIcon(R.drawable.ic_stat_alarm)
+            .setContentTitle("⏰ Alarm in progress")
+            .setContentText("Finish your mission to turn it off")
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setOngoing(true)
+            .setContentIntent(pi)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .build()
     }
 
     private fun buildNotification(alarm: Alarm?): Notification {
@@ -322,6 +374,12 @@ class AlarmService : Service() {
     private val escalate = Runnable {
         if (RingState.kind == Scheduler.KIND_WAKECHECK && !RingState.escalated && RingState.ringing) {
             RingState.markEscalated()
+            if (!uiVisible) {
+                // re-post so the full-screen intent fires again on a sleeping phone
+                try {
+                    ServiceCompat.startForeground(this, Notifier.ID_RING, buildNotification(RingState.alarm), fgType)
+                } catch (_: Exception) {}
+            }
             handler.removeCallbacks(unmute)
             muted = false
             level = 1f
@@ -410,6 +468,10 @@ class AlarmService : Service() {
     private fun stopEverything() {
         cleanup()
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+        val nm = getSystemService(NotificationManager::class.java)
+        nm.cancel(Notifier.ID_RING)
+        nm.cancel(Notifier.ID_RING_QUIET)
+        uiVisible = false
         stopSelf()
     }
 

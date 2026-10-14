@@ -60,6 +60,8 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
     private var started = false
     private var waitingForService = false
     private var ringingAlarmId = -1
+    /** True while we open the camera/scanner on purpose (don't bring the loud banner back). */
+    private var launchingExternal = false
     private var clockView: TextView? = null
     private var countdownView: TextView? = null
     private var fallbackBox: LinearLayout? = null
@@ -90,7 +92,7 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
 
     private val ticker = object : Runnable {
         override fun run() {
-            clockView?.text = LocalDateTime.now().let { formatTime(it.hour, it.minute) }
+            updateClock()
             countdownView?.let { v ->
                 val left = (RingState.wakeCheckWindowMs - (System.currentTimeMillis() - RingState.startedAt)) / 1000
                 v.text = "${left.coerceAtLeast(0)} s"
@@ -147,6 +149,19 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
         render()
     }
 
+    override fun onResume() {
+        super.onResume()
+        launchingExternal = false
+        if (RingState.ringing) AlarmService.send(this, AlarmService.ACTION_UI_SHOWN)
+    }
+
+    override fun onPause() {
+        if (RingState.ringing && !isFinishing && !launchingExternal) {
+            AlarmService.send(this, AlarmService.ACTION_UI_HIDDEN)
+        }
+        super.onPause()
+    }
+
     override fun onStop() {
         started = false
         RingState.removeListener(stateListener)
@@ -195,7 +210,23 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
         }
     }
 
+    private var bigClock = false
+
+    /** On the ring screen the AM/PM marker is shrunk so the time fits on one line. */
+    private fun updateClock() {
+        val v = clockView ?: return
+        val now = LocalDateTime.now()
+        val text = formatTime(now.hour, now.minute)
+        val split = text.indexOfFirst { it == ' ' || it == '\u202F' }
+        v.text = if (bigClock && split > 0) {
+            android.text.SpannableString(text).apply {
+                setSpan(android.text.style.RelativeSizeSpan(0.35f), split, text.length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        } else text
+    }
+
     private fun clearMission() {
+        bigClock = false
         current?.onStop()
         current?.onDestroy()
         current = null
@@ -212,8 +243,12 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
         val col = column(24).apply { gravity = Gravity.CENTER_HORIZONTAL }
         col.add(Space(this), MATCH, 0, weight = 1f)
         col.add(label(LocalDateTime.now().format(DateTimeFormatter.ofPattern("EEEE, d MMMM", Locale.getDefault())), 18f, C.MUTED, gravity = Gravity.CENTER))
-        clockView = col.add(label("", 84f, C.TEXT, bold = true, gravity = Gravity.CENTER).apply { tag = "clock" })
-        clockView?.text = LocalDateTime.now().let { formatTime(it.hour, it.minute) }
+        clockView = col.add(label("", 80f, C.TEXT, bold = true, gravity = Gravity.CENTER).apply {
+            tag = "clock"
+            maxLines = 1
+        })
+        bigClock = true
+        updateClock()
         if (alarm.label.isNotBlank()) col.add(label(alarm.label, 22f, C.PRIMARY, gravity = Gravity.CENTER), topDp = 4)
         if (RingState.kind == Scheduler.KIND_WAKECHECK && RingState.escalated) {
             col.add(label("😴 You didn't answer the wake-up check.\nFinish your mission to turn it off.", 17f, C.DANGER, gravity = Gravity.CENTER), topDp = 16)
@@ -309,7 +344,7 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
         val header = row()
         header.add(label("Mission ${index + 1} of ${missions.size}", 14f, C.MUTED), 0, WRAP, weight = 1f)
         clockView = header.add(label("", 14f, C.MUTED), WRAP, WRAP)
-        clockView?.text = LocalDateTime.now().let { formatTime(it.hour, it.minute) }
+        updateClock()
         col.add(header)
         col.add(label("${m.type.emoji} ${m.type.title}", 26f, C.TEXT, bold = true).apply { tag = "mission_title" }, topDp = 4)
         val body = mv.create()
@@ -372,10 +407,12 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
                 photoFile = f
                 photoCallback = onResult
                 poke()
+                launchingExternal = true
                 try {
                     takePicture.launch(FileProvider.getUriForFile(this, "$packageName.files", f))
                 } catch (e: ActivityNotFoundException) {
                     photoCallback = null
+                    launchingExternal = false
                     requestFallback("No camera app found on this phone.")
                 }
             }
@@ -387,6 +424,7 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
             withUnlocked {
                 scanCallback = onResult
                 poke()
+                launchingExternal = true
                 scan.launch(
                     ScanOptions()
                         .setPrompt("Scan your registered barcode")
@@ -402,6 +440,7 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
             action()
         } else {
             pendingCameraAction = action
+            launchingExternal = true
             cameraPermission.launch(Manifest.permission.CAMERA)
         }
     }
@@ -410,6 +449,7 @@ class AlarmActivity : AppCompatActivity(), MissionHost {
     private fun withUnlocked(action: () -> Unit) {
         val km = getSystemService(KeyguardManager::class.java)
         if (km != null && km.isKeyguardLocked) {
+            launchingExternal = true
             km.requestDismissKeyguard(this, object : KeyguardManager.KeyguardDismissCallback() {
                 override fun onDismissSucceeded() = action()
                 override fun onDismissError() = action()
