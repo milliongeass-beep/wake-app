@@ -35,7 +35,15 @@ class AlarmReceiver : BroadcastReceiver() {
 
 /** Alarms are wiped by reboots, clock/time-zone changes and app updates — put them back. */
 class BootReceiver : BroadcastReceiver() {
+    private val handled = setOf(
+        Intent.ACTION_BOOT_COMPLETED,
+        Intent.ACTION_TIME_CHANGED,
+        Intent.ACTION_TIMEZONE_CHANGED,
+        Intent.ACTION_MY_PACKAGE_REPLACED,
+        "android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED",
+    )
+
     override fun onReceive(context: Context, intent: Intent) {
-        Scheduler.rescheduleAll(context)
+        if (intent.action in handled) Scheduler.rescheduleAll(context)
     }
 }
