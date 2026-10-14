@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="nav_alarms" type="id" />
+    <item name="nav_tonight" type="id" />
+    <item name="nav_sounds" type="id" />
+    <item name="nav_stats" type="id" />
+    <item name="nav_settings" type="id" />
+</resources>

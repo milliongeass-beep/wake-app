@@ -1,0 +1,103 @@
+name: Build & test APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Compile, unit tests, lint
+        id: build
+        run: |
+          chmod +x gradlew
+          set -o pipefail
+          ./gradlew assembleRelease assembleDebug assembleDebugAndroidTest testDebugUnitTest lintDebug --stacktrace --no-daemon 2>&1 | tee build.log
+
+      - name: Enable KVM for the emulator
+        if: steps.build.outcome == 'success'
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run app on an Android 14 emulator
+        id: emu
+        if: steps.build.outcome == 'success'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-boot-anim -camera-back none -camera-front none
+          script: |
+            adb shell rm -rf /data/local/tmp/screens
+            adb logcat -c
+            ./gradlew connectedDebugAndroidTest --no-daemon > emu.log 2>&1 || echo FAILED > emu_failed.txt
+            adb pull /data/local/tmp/screens screens || true
+            adb logcat -d > logcat.txt || true
+
+      - name: Publish results to the ci-results branch
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p out
+          cp build.log out/ 2>/dev/null || true
+          cp emu.log out/ 2>/dev/null || true
+          [ -f logcat.txt ] && grep -E "FATAL EXCEPTION|AndroidRuntime|WQ[A-Za-z]*|ActivityTaskManager: (START|Background activity)" -A 25 logcat.txt | head -3000 > out/logcat_app.txt || true
+          cp app/build/lint.txt out/lint.txt 2>/dev/null || true
+          cp -r screens out/ 2>/dev/null || true
+          mkdir -p out/unit out/device
+          cp app/build/test-results/testDebugUnitTest/*.xml out/unit/ 2>/dev/null || true
+          find app/build/outputs/androidTest-results -name "*.xml" -exec cp {} out/device/ \; 2>/dev/null || true
+          {
+            echo "run=${{ github.run_number }}"
+            echo "commit=${{ github.sha }}"
+            echo "build=${{ steps.build.outcome }}"
+            if [ -f emu_failed.txt ]; then echo "device_tests=failure"; elif [ "${{ steps.emu.outcome }}" = "success" ]; then echo "device_tests=success"; else echo "device_tests=${{ steps.emu.outcome }}"; fi
+          } > out/status.txt
+          cat out/status.txt
+          cd out
+          git init -q
+          git config user.name "ci"
+          git config user.email "ci@users.noreply.github.com"
+          git checkout -q -b ci-results
+          git add -A
+          git commit -q -m "CI run ${{ github.run_number }}"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" ci-results
+
+      - name: Publish APK as the "latest" release
+        if: steps.build.outcome == 'success' && steps.emu.outcome == 'success' && hashFiles('emu_failed.txt') == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk WakeQuest.apk
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest WakeQuest.apk \
+            --title "WakeQuest (build ${{ github.run_number }})" \
+            --notes "Tap **WakeQuest.apk** below to download, then open it to install. Built and tested automatically from commit ${{ github.sha }}."
+
+      - name: Fail if device tests failed
+        if: hashFiles('emu_failed.txt') != ''
+        run: exit 1
